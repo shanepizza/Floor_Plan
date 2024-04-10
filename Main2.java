@@ -1,8 +1,13 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Main2 {
     static ArrayList<Node> AllNodes = new ArrayList<Node>();
+    static ArrayList<Node> Rooms = new ArrayList<Node>();
     public static void main(String[] args) {
+        //Do not cross these hallways pls
+        
+        
         createHallway(new Position(2, 3), new Position(20, 3));
         createHallway(new Position(4, 2), new Position(4, 20));
         Graph floorplan = createFloorPlan();
@@ -11,48 +16,18 @@ public class Main2 {
 
 //Final Form
     public static void createHallway(Position startingposition, Position stoppingPossition){
-        
-        Node hallwayStart = new Node(NodeType.HALLWAY, startingposition);
-        Node hallwayEnd = new Node(NodeType.HALLWAY, stoppingPossition);
-        AllNodes.add(hallwayStart);
-        
-
-
         if(startingposition.y == stoppingPossition.y){
             //if the 'Y' value is the same it is a horizontal Hallway
             for (int x = startingposition.x; x < stoppingPossition.x; x++){
                 AllNodes.add(new Node(NodeType.HALLWAY, new Position(x,startingposition.y)));
-                //if(AllNodes.get(AllNodes.size()-1) != null && AllNodes.get(AllNodes.size()-2).type != NodeType.DELIMITER){
-                    AllNodes.get(AllNodes.size()-1).addConnection(AllNodes.get(AllNodes.size()-2));
-                    AllNodes.get(AllNodes.size()-2).addConnection(AllNodes.get(AllNodes.size()-1));
-                //}
-                
             }//End For
-            AllNodes.add(hallwayEnd);
-            AllNodes.get(AllNodes.size()-1).addConnection(AllNodes.get(AllNodes.size()-2));
-            AllNodes.get(AllNodes.size()-2).addConnection(AllNodes.get(AllNodes.size()-1));
-            AllNodes.add(new Node(NodeType.DELIMITER));
         }
         if(startingposition.x == stoppingPossition.x){
             //If the 'X' value is the same it is a vertical Hallway
             for (int y = startingposition.y; y < stoppingPossition.y; y++){
                 AllNodes.add(new Node(NodeType.HALLWAY, new Position(startingposition.x, y)));
-                //if(AllNodes.get(AllNodes.size()-1) != null && AllNodes.get(AllNodes.size()-2).type != NodeType.DELIMITER){
-                    AllNodes.get(AllNodes.size()-1).addConnection(AllNodes.get(AllNodes.size()-2));
-                    AllNodes.get(AllNodes.size()-2).addConnection(AllNodes.get(AllNodes.size()-1));
-                //}
             }//End For
-            AllNodes.add(hallwayEnd);
-            AllNodes.get(AllNodes.size()-1).addConnection(AllNodes.get(AllNodes.size()-2));
-            AllNodes.get(AllNodes.size()-2).addConnection(AllNodes.get(AllNodes.size()-1));
-            AllNodes.add(new Node(NodeType.DELIMITER));
         }
-
-        //AllNodes.add(hallwayEnd);
-        //AllNodes.get(AllNodes.size()-1).addConnection(AllNodes.get(AllNodes.size()-2));
-        //AllNodes.get(AllNodes.size()-2).addConnection(AllNodes.get(AllNodes.size()-1));
-
-
         //TODO: We could add in some code to clarify what happens when positions do not line up perfectly but I will do this later if at all.
     }//Create Hallway
 //Final Form
@@ -117,8 +92,31 @@ public class Main2 {
     }
 
 //WIP
-    static void createSmallRoom(){
-        //find a hallways node and then create a node right next to it that is of door Type
+    static void createSmallRoom(int size){
+        ArrayList<Node> hallways = new ArrayList<Node>(size);
+        Random random = new Random();
+        int side;
+        int node;
+        
+        
+        for(int i = 0; i < size; i++){
+            //which side?
+            side = random.nextInt(2); 
+            //left or top = 0
+            //right or bottom = 1
+            node = random.nextInt(AllNodes.size());
+            //which node do we build on?
+
+
+
+        }
+
+        //TODO: create a list of hallway nodes
+        //each node will have only one door
+
+        //TODO: 
+        
+        //find a hallway node and then create a node right next to it that is of door Type
     }    
     static void createlargeRoom(){
         //Simply connect small room doors that are next to eachother

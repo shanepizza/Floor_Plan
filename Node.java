@@ -20,4 +20,15 @@ public class Node {
     public void addConnection(Node node) {
         connections.add(node);
     }
+
+    public Position[] neighbors(){
+        Position[] neighbors = new Position[4];
+
+        neighbors[0] = new Position(this.position.x, this.position.y+1);
+        neighbors[1] = new Position(this.position.x, this.position.y-1);
+        neighbors[2] = new Position(this.position.x+1, this.position.y);
+        neighbors[3] = new Position(this.position.x-1, this.position.y);
+
+        return neighbors;
+    }
 }
