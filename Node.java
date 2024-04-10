@@ -21,14 +21,24 @@ public class Node {
         connections.add(node);
     }
 
-    public Position[] neighbors(){
+    public Position[] getNeighbors(){
         Position[] neighbors = new Position[4];
 
         neighbors[0] = new Position(this.position.x, this.position.y+1);
-        neighbors[1] = new Position(this.position.x, this.position.y-1);
+        neighbors[1] = new Position(this.position.x-1, this.position.y);
         neighbors[2] = new Position(this.position.x+1, this.position.y);
-        neighbors[3] = new Position(this.position.x-1, this.position.y);
+        neighbors[3] = new Position(this.position.x, this.position.y-1);
 
         return neighbors;
     }
+
+
+    public boolean isNeighbor(Node neighbor){
+        if(this.position.x == neighbor.position.x+1 ||this.position.x == neighbor.position.x-1  && this.position.y == neighbor.position.y+1 || this.position.y == neighbor.position.y-1){
+            return true;
+        }
+        return false;
+    }
+
+    
 }

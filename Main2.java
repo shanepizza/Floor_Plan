@@ -9,7 +9,9 @@ public class Main2 {
         
         
         createHallway(new Position(2, 3), new Position(20, 3));
-        createHallway(new Position(4, 2), new Position(4, 20));
+        createHallway(new Position(4, 4), new Position(4, 20));
+        createHallway(new Position(15, 4), new Position(15, 20));
+        createGroupOfRooms(0, 50);
         Graph floorplan = createFloorPlan();
         visualizeFloorPlan(floorplan);
     }//End Main
@@ -35,6 +37,14 @@ public class Main2 {
         Graph floorplan = new Graph();
 
         for (int size = 0; size<AllNodes.size();size++){
+            for (Node node : AllNodes) {
+                for (Node node2 : AllNodes) {
+                    if(node.isNeighbor(node2)){
+                        node.addConnection(node2);
+                        node2.addConnection(node);
+                    }
+                }
+            }
             if(AllNodes.get(size).position != null){
                 floorplan.addNode(AllNodes.get(size));
             }
@@ -93,7 +103,7 @@ public class Main2 {
 
 //WIP
     static void createSmallRoom(int size){
-        ArrayList<Node> hallways = new ArrayList<Node>(size);
+        int hallwayNodes = AllNodes.size();
         Random random = new Random();
         int side;
         int node;
@@ -101,32 +111,39 @@ public class Main2 {
         
         for(int i = 0; i < size; i++){
             //which side?
-            side = random.nextInt(2); 
+            side = random.nextInt(4); 
             //left or top = 0
             //right or bottom = 1
-            node = random.nextInt(AllNodes.size());
+            node = random.nextInt(hallwayNodes);
             //which node do we build on?
+                if(!isNode(AllNodes.get(node).getNeighbors()[side], AllNodes)){
+                    AllNodes.add(new Node(NodeType.DOOR, AllNodes.get(node).getNeighbors()[side]));
+                }//End If
+                
+        }//End For
+            
+    }//End createSmallRoom
 
-
-
-        }
-
-        //TODO: create a list of hallway nodes
-        //each node will have only one door
-
-        //TODO: 
-        
-        //find a hallway node and then create a node right next to it that is of door Type
-    }    
+  
     static void createlargeRoom(){
         //Simply connect small room doors that are next to eachother
     }
-//WIP
     
 //WIP
     static void createGroupOfRooms(int number_of_LargeRooms, int number_of_SmallRooms){
-        //Use small rooms 
+        createSmallRoom(number_of_SmallRooms);
     }
+
+    static boolean isNode(Position spotToCheck, ArrayList<Node> allTheNodes){
+        for(int i = 0; i < allTheNodes.size(); i++){
+            if( spotToCheck.x == allTheNodes.get(i).position.x && spotToCheck.y == allTheNodes.get(i).position.y){
+                return true;
+            }
+        }
+        return false;
+       
+    }
+
 
 }
 
