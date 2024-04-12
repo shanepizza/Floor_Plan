@@ -170,7 +170,7 @@ public class Main2 {
 
         
     } catch (Exception e) {
-        // TODO: handle exception
+        System.out.println("Did you serialize each class?");
     }
 
     return ObjectFloor;
@@ -188,7 +188,7 @@ public class Main2 {
         System.out.println("\n\nFloor Plan has been Serialized\n\n");
 
     } catch (Exception e) {
-        System.out.println("Error!");
+        System.out.println("Did you serialize the class above?");
         e.printStackTrace();
     }
 }
