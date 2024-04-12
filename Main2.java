@@ -1,19 +1,30 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Main2 {
     static ArrayList<Node> AllNodes = new ArrayList<Node>();
     static ArrayList<Node> Rooms = new ArrayList<Node>();
+    public static String filename = "FloorPlan.ser";
+
     public static void main(String[] args) {
-        //Do not cross these hallways pls
         
-        
-        createHallway(new Position(2, 3), new Position(20, 3));
-        createHallway(new Position(4, 4), new Position(4, 20));
-        createHallway(new Position(15, 4), new Position(15, 20));
-        createGroupOfRooms(0, 50);
+
+    //Create floorplan hides all the code for the nodes
         Graph floorplan = createFloorPlan();
+        
         visualizeFloorPlan(floorplan);
+
+    //Serialize//
+        SerializeGraph(floorplan, filename);
+
+    //Deserialize//
+        visualizeFloorPlan(retrievGraph(filename));
+
     }//End Main
 
 //Final Form
@@ -35,6 +46,8 @@ public class Main2 {
 //Final Form
     static Graph createFloorPlan(){
         Graph floorplan = new Graph();
+        createNodes();
+
 
         for (int size = 0; size<AllNodes.size();size++){
             for (Node node : AllNodes) {
@@ -123,12 +136,10 @@ public class Main2 {
         }//End For
             
     }//End createSmallRoom
-
-  
+//WIP
     static void createlargeRoom(){
         //Simply connect small room doors that are next to eachother
     }
-    
 //WIP
     static void createGroupOfRooms(int number_of_LargeRooms, int number_of_SmallRooms){
         createSmallRoom(number_of_SmallRooms);
@@ -144,7 +155,52 @@ public class Main2 {
        
     }
 
+    static Graph retrievGraph(String fileName){
+    Graph ObjectFloor = null;
+    
+    try {
+        FileInputStream file = new FileInputStream(fileName);
+        ObjectInputStream in = new ObjectInputStream(file);
 
+
+        ObjectFloor = (Graph)in.readObject();
+
+        in.close();
+        file.close();
+
+        
+    } catch (Exception e) {
+        // TODO: handle exception
+    }
+
+    return ObjectFloor;
 }
+
+    static void SerializeGraph(Graph serializeThis, String fileName){
+    try {
+        FileOutputStream file = new FileOutputStream(fileName);
+        ObjectOutputStream out = new ObjectOutputStream(file);
+        out.writeObject((Object)serializeThis);
+
+        out.close();
+        file.close();
+
+        System.out.println("\n\nFloor Plan has been Serialized\n\n");
+
+    } catch (Exception e) {
+        System.out.println("Error!");
+        e.printStackTrace();
+    }
+}
+//Final Form
+    static void createNodes(){
+    //Do not cross these hallways pls
+        createHallway(new Position(2, 3), new Position(20, 3));
+        createHallway(new Position(4, 4), new Position(4, 20));
+        createHallway(new Position(15, 4), new Position(15, 20));
+        createGroupOfRooms(0, 50);
+    }
+
+}//End Class
 
 

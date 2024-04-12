@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 // Define the floor plan graph
-public class Graph {
+public class Graph implements Serializable {
     List<Node> nodes; // List of nodes in the graph
 
     public Graph() {

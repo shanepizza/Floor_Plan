@@ -1,5 +1,8 @@
 // Define the position of a node on the floor plan
-public class Position {
+
+import java.io.Serializable;
+
+public class Position implements Serializable{
     int x; // X-coordinate of the node's position
     int y; // Y-coordinate of the node's position
 
