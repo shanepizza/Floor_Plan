@@ -1,6 +1,5 @@
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -177,21 +176,21 @@ public class Main2 {
 }
 
     static void SerializeGraph(Graph serializeThis, String fileName){
-    try {
-        FileOutputStream file = new FileOutputStream(fileName);
-        ObjectOutputStream out = new ObjectOutputStream(file);
-        out.writeObject((Object)serializeThis);
+        try {
+            FileOutputStream file = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(file);
+            out.writeObject((Object)serializeThis);
 
-        out.close();
-        file.close();
+            out.close();
+            file.close();
 
-        System.out.println("\n\nFloor Plan has been Serialized\n\n");
+            System.out.println("\n\nFloor Plan has been Serialized\n\n");
 
-    } catch (Exception e) {
-        System.out.println("Did you serialize the class above?");
-        e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Did you serialize the class above?");
+            e.printStackTrace();
+        }
     }
-}
 //Final Form
     static void createNodes(){
     //Do not cross these hallways pls
