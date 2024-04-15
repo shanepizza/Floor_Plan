@@ -8,7 +8,7 @@ import java.util.Random;
 public class Main2 {
     static ArrayList<Node> AllNodes = new ArrayList<Node>();
     static ArrayList<Node> Rooms = new ArrayList<Node>();
-    public static String filename = "FloorPlan.ser";
+    public static String filename = "SpencersFloorPlan.ser";
 
     public static void main(String[] args) {
         
@@ -194,9 +194,9 @@ public class Main2 {
 //Final Form
     static void createNodes(){
     //Do not cross these hallways pls
-        createHallway(new Position(2, 3), new Position(20, 3));
-        createHallway(new Position(4, 4), new Position(4, 20));
-        createHallway(new Position(15, 4), new Position(15, 20));
+        createHallway(new Position(1, 1), new Position(1, 20));
+        createHallway(new Position(4, 4), new Position(19, 4));
+        createHallway(new Position(4, 12), new Position(19, 12));
         createGroupOfRooms(0, 50);
     }
 
