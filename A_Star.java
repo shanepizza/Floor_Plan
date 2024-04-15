@@ -3,8 +3,13 @@ import java.util.ArrayList;
 import java.math.*;
 
 public class A_Star {
-    // [ ] Nodes will all need a variable called parent and a getter and setter for
-    // the variable.
+
+    static ArrayList<Node> Path;
+    // [ ] Nodes will all need a variable called parent and a getter and setter for the variable.
+
+    public A_Star () {
+        Path = new ArrayList<>();
+    }
 
     public static void main(String[] args) {
 
@@ -25,36 +30,58 @@ public class A_Star {
         ArrayList<Node> ClosedList = new ArrayList<Node>();
         ArrayList<Node> ChildrenList = new ArrayList<Node>();
 
-        while (!OpenList.isEmpty()) {
-            // [ ] Check (is this node the goal?) {
-            // if so, begin to print the path by printing the current node then switch
-            // current node to parent node and repeat.
-            // }
 
-            // [ ] find the lowest f score in the openlist. (We can either organize the list
-            // or check the whole list each time for the lowest f score)
-            // [ ] pop the node with the lowest f-score off the list and call it current
-            // node
+        Node currentNode = start;
+        OpenList.add(start);
 
-            // [ ] find the children of current node and put them in current children
-            // ArrayList
+        while(!OpenList.isEmpty()){
+            OpenList.remove(start);
 
-            // cycle through the list of children nodes:
-            // [ ] set their parent node to current_node (This is used for the path tracing
-            // later)
-            // [ ] assign a g value to current_child using find_g();
-            // [ ] assign an h value to current_child using find_h();
-            // [ ] assign an f value by adding g and h or using calculate_f();
+            for (int i = 0; i < currentNode.connections.size(); i++) {
+                ChildrenList.add(currentNode.connections.get(i));
+                currentNode.connections.get(i).parent = currentNode;
+                ChildrenList.get(i).g = find_traversed();
+                ChildrenList.get(i).h = find_distance();
+                ChildrenList.get(i).f = calculate_next();
+            }
 
-            // if check both Open and Closed lists (if either have the same node with a
-            // lower F score ignore this current_child.)
 
-            // Add to OpenList in the proper spot so the whole list stays in order based on
-            // its f score
-            // }
+            for (int i = 0; i < OpenList.size(); i++) {
+                if (OpenList.get(i) == goal) {
+                    Path.add(OpenList.get(i));
+                    currentNode = OpenList.get(i).parent;
+                }
+            }
 
-            // Notes* there is no need to worry about the case where current child has a
-            // lowerscore than the same node in either the open or closed list because
+
+
+
+            //[ ] Check (is this node the goal?) {
+                //if so, begin to print the path by printing the current node then switch current node to parent node and repeat.
+            //}
+
+
+            //[ ] find the lowest f score in the openlist. (We can either organize the list or check the whole list each time for the lowest f score)
+            //[ ] pop the node with the lowest f-score off the list and call it current node 
+            
+            //[ ] find the children of current node and put them in current children ArrayList
+
+            
+            //cycle through the list of children nodes:
+                // [ ] set their parent node to current_node (This is used for the path tracing later)
+                // [ ] assign a g value to current_child using find_g();
+                // [ ] assign an h value to current_child using find_h();
+                // [ ] assign an f value by adding g and h or using calculate_f();
+                
+                //if check both Open and Closed lists (if either have the same node with a lower F score ignore this current_child.)
+                
+                    //Add to OpenList in the proper spot so the whole list stays in order based on its f score
+                //}
+                
+
+          
+                //Notes* there is no need to worry about the case where current child has a lowerscore than the same node in either the open or closed list because 
+
         }
     }
 
@@ -73,7 +100,9 @@ public class A_Star {
         int gX = Math.abs(goalNode.position.x);
         int gY = Math.abs(goalNode.position.y);
 
+
         distance_score = cX - gX + cY - gY;
+
 
         // [ ] return the proper h-score
         return distance_score;
@@ -97,6 +126,7 @@ public class A_Star {
     // in the list.
     static int calculate_next(Node currentNode, Node goalNode) {
         int next = find_traversed(currentNode) + find_distance(currentNode, goalNode);
+
 
         // [ ] return the proper next-score
         return next;
