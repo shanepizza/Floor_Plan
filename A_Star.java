@@ -1,7 +1,12 @@
 import java.util.ArrayList;
 
 public class A_Star {
-    // [ ] Nodes will all need a variable called parent and a getter and setter for the variable. 
+    static ArrayList<Node> Path;
+    // [ ] Nodes will all need a variable called parent and a getter and setter for the variable.
+
+    public A_Star () {
+        Path = new ArrayList<>();
+    }
 
     public static void main(String[] args) {
         
@@ -26,7 +31,31 @@ public class A_Star {
         ArrayList<Node> ClosedList = new ArrayList<Node>();
         ArrayList<Node> ChildrenList = new ArrayList<Node>();
 
+        Node currentNode = start;
+        OpenList.add(start);
+
         while(!OpenList.isEmpty()){
+            OpenList.remove(start);
+
+            for (int i = 0; i < currentNode.connections.size(); i++) {
+                ChildrenList.add(currentNode.connections.get(i));
+                currentNode.connections.get(i).parent = currentNode;
+                ChildrenList.get(i).g = find_traversed();
+                ChildrenList.get(i).h = find_distance();
+                ChildrenList.get(i).f = calculate_next();
+            }
+
+
+            for (int i = 0; i < OpenList.size(); i++) {
+                if (OpenList.get(i) == goal) {
+                    Path.add(OpenList.get(i));
+                    currentNode = OpenList.get(i).parent;
+                }
+            }
+
+
+
+
             //[ ] Check (is this node the goal?) {
                 //if so, begin to print the path by printing the current node then switch current node to parent node and repeat.
             //}
@@ -64,7 +93,7 @@ public class A_Star {
 //feed it the actual distance formula or use the Manhattan distance approach.
     static int find_h(){
     int h_score =0;
-        //Manhattan distance aproach to calculate h
+        //Manhattan distance approach to calculate h
     //  h = abs (current_cell.x – goal.x) + abs (current_cell.y – goal.y)
         
     //Distance Formula
@@ -75,8 +104,8 @@ public class A_Star {
     }
 
 
-//our g variable is going to 1*n where n is the number of moves we make from the beggining
-//since there is no difference in cost for moving between hallway nodes, doornodes, etc.
+//our g variable is going to 1*n where n is the number of moves we make from the beginning
+//since there is no difference in cost for moving between hallway nodes, door-nodes, etc.
     static int find_g(){
         int g_score =0;
         //get the g value of the parent node. 
@@ -88,7 +117,7 @@ public class A_Star {
 
 //This is what we will use to determine which node to visit next/where it goes in the list.
     static int calculate_f(){
-        int distance = find_g()+find_h();
+        int distance = find_g() + find_h();
 
         // [ ] return the proper f-score
         return distance;

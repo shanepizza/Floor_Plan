@@ -11,6 +11,8 @@ public class Main2 {
     public static String filename = "SpencersFloorPlan.ser";
 
     public static void main(String[] args) {
+        Node staircase = new Node(NodeType.STAIRCASE, new Position(18, 5));
+        AllNodes.add(staircase);
         
 
     //Create floorplan hides all the code for the nodes
@@ -195,8 +197,8 @@ public class Main2 {
     static void createNodes(){
     //Do not cross these hallways pls
         createHallway(new Position(1, 1), new Position(1, 20));
-        createHallway(new Position(4, 4), new Position(19, 4));
-        createHallway(new Position(4, 12), new Position(19, 12));
+        createHallway(new Position(2, 4), new Position(19, 4));
+        createHallway(new Position(2, 12), new Position(19, 12));
         createGroupOfRooms(0, 50);
     }
 

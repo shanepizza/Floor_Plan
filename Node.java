@@ -8,6 +8,12 @@ public class Node implements Serializable{
     Position position; // The position of the node on the floor plan
     List<Node> connections; // List of adjacent nodes (connected via edges)
 
+    Node parent;
+
+    int g;
+    int h;
+    int f;
+
     public Node(NodeType type, Position position) {
         this.type = type;
         this.position = position;
