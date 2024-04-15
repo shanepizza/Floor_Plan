@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
+import java.math.*;
+
 public class A_Star {
+
     static ArrayList<Node> Path;
     // [ ] Nodes will all need a variable called parent and a getter and setter for the variable.
 
@@ -9,27 +12,24 @@ public class A_Star {
     }
 
     public static void main(String[] args) {
-        
-        //for(files in folder)
-            //load in serialized graph class
-            // create a thread
-            //run A* on the thread with the current graph class
 
-            //print floor name and path.
-            //should we add a name variable to each Graph?
-        //}
+        // for(files in folder)
+        // load in serialized graph class
+        // create a thread
+        // run A* on the thread with the current graph class
 
-
-
-
+        // print floor name and path.
+        // should we add a name variable to each Graph?
+        // }
 
     }
 
-    public static void begin_Astar(Graph graphToSearch, Node start, Node goal){
-        //Add start to open list
+    public static void begin_Astar(Graph graphToSearch, Node start, Node goal) {
+        // Add start to open list
         ArrayList<Node> OpenList = new ArrayList<Node>();
         ArrayList<Node> ClosedList = new ArrayList<Node>();
         ArrayList<Node> ChildrenList = new ArrayList<Node>();
+
 
         Node currentNode = start;
         OpenList.add(start);
@@ -81,45 +81,54 @@ public class A_Star {
 
           
                 //Notes* there is no need to worry about the case where current child has a lowerscore than the same node in either the open or closed list because 
+
         }
     }
 
-    
+    // Instead of static these methods could all be added to the Node class. might
+    // be cleaner
+
+    // Distance is our predetermined heuristic. For the sake of this program we will
+    // call it the distance between start and end.
+    // feed it the actual distance formula or use the Manhattan distance approach.
+    static int find_distance(Node currentNode, Node goalNode) {
+        int distance_score = 0;
+        // Manhattan distance aproach to calculate distance
+
+        int cX = Math.abs(currentNode.position.x);
+        int cY = Math.abs(currentNode.position.y);
+        int gX = Math.abs(goalNode.position.x);
+        int gY = Math.abs(goalNode.position.y);
 
 
-//Instead of static these methods could all be added to the Node class. might be cleaner
+        distance_score = cX - gX + cY - gY;
 
-// H is our predetermined heuristic. For the sake of this program we will call it the distance between start and end. 
-//feed it the actual distance formula or use the Manhattan distance approach.
-    static int find_h(){
-    int h_score =0;
-        //Manhattan distance approach to calculate h
-    //  h = abs (current_cell.x – goal.x) + abs (current_cell.y – goal.y)
-        
-    //Distance Formula
-    //h = sqrt[(x_2-x_1)^2 + (y_2 - y_1)^2] 
-    
-    // [ ] return the proper h-score
-    return h_score;
+
+        // [ ] return the proper h-score
+        return distance_score;
     }
 
+    // our traversed variable is going to 1*n where n is the number of moves we make
+    // from
+    // the beginning
+    // since there is no difference in cost for moving between hallway nodes,
+    // doornodes, etc.
+    static int find_traversed(Node currentNode) {
+        int traversed_score = 0;
+        // get the traversed value of the parent node.
+        traversed_score = currentNode.parent.g + 1;
 
-//our g variable is going to 1*n where n is the number of moves we make from the beginning
-//since there is no difference in cost for moving between hallway nodes, door-nodes, etc.
-    static int find_g(){
-        int g_score =0;
-        //get the g value of the parent node. 
-        //add 1 to that and call it g for current node.
-        
-        // [ ] return the proper g-score
-        return g_score;
+        // [ ] return the proper traversed-score
+        return traversed_score;
     }
 
-//This is what we will use to determine which node to visit next/where it goes in the list.
-    static int calculate_f(){
-        int distance = find_g() + find_h();
+    // This is what we will use to determine which node to visit next/where it goes
+    // in the list.
+    static int calculate_next(Node currentNode, Node goalNode) {
+        int next = find_traversed(currentNode) + find_distance(currentNode, goalNode);
 
-        // [ ] return the proper f-score
-        return distance;
+
+        // [ ] return the proper next-score
+        return next;
     }
 }
