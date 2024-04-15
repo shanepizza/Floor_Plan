@@ -79,7 +79,8 @@ public class A_Star {
         return distance_score;
     }
 
-    // our g variable is going to 1*n where n is the number of moves we make from
+    // our traversed variable is going to 1*n where n is the number of moves we make
+    // from
     // the beginning
     // since there is no difference in cost for moving between hallway nodes,
     // doornodes, etc.
@@ -88,7 +89,7 @@ public class A_Star {
         // get the traversed value of the parent node.
         traversed_score = currentNode.parent.g + 1;
 
-        // [ ] return the proper g-score
+        // [ ] return the proper traversed-score
         return traversed_score;
     }
 
@@ -97,7 +98,7 @@ public class A_Star {
     static int calculate_next(Node currentNode, Node goalNode) {
         int next = find_traversed(currentNode) + find_distance(currentNode, goalNode);
 
-        // [ ] return the proper f-score
+        // [ ] return the proper next-score
         return next;
     }
 }
