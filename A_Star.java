@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class A_Star {
-    
+    // [ ] Nodes will all need a variable called parent and a getter and setter for the variable. 
 
     public static void main(String[] args) {
         
