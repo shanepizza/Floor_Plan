@@ -12,12 +12,6 @@ public class Node implements Serializable {
     int f;
     Node parent;
 
-    Node parent;
-
-    int g;
-    int h;
-    int f;
-
     public Node(NodeType type, Position position) {
         this.type = type;
         this.position = position;

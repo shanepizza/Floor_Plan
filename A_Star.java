@@ -40,9 +40,9 @@ public class A_Star {
             for (int i = 0; i < currentNode.connections.size(); i++) {
                 ChildrenList.add(currentNode.connections.get(i));
                 currentNode.connections.get(i).parent = currentNode;
-                ChildrenList.get(i).g = find_traversed();
-                ChildrenList.get(i).h = find_distance();
-                ChildrenList.get(i).f = calculate_next();
+                ChildrenList.get(i).g = find_traversed(currentNode);
+                ChildrenList.get(i).h = find_distance(currentNode, goal);
+                ChildrenList.get(i).f = calculate_next(currentNode, goal);
             }
 
 
