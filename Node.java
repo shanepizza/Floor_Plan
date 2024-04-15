@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Define a node in the floor plan graph
-public class Node implements Serializable{
+public class Node implements Serializable {
     NodeType type; // The type of the node (e.g., door, hallway, staircase)
     Position position; // The position of the node on the floor plan
     List<Node> connections; // List of adjacent nodes (connected via edges)
@@ -18,7 +18,7 @@ public class Node implements Serializable{
         this.connections = new ArrayList<>();
     }
 
-    Node(NodeType type){
+    Node(NodeType type) {
         this.type = type;
     }
 
@@ -26,24 +26,24 @@ public class Node implements Serializable{
         connections.add(node);
     }
 
-    public Position[] getNeighbors(){
+    public Position[] getNeighbors() {
         Position[] neighbors = new Position[4];
 
-        neighbors[0] = new Position(this.position.x, this.position.y+1);
-        neighbors[1] = new Position(this.position.x-1, this.position.y);
-        neighbors[2] = new Position(this.position.x+1, this.position.y);
-        neighbors[3] = new Position(this.position.x, this.position.y-1);
+        neighbors[0] = new Position(this.position.x, this.position.y + 1);
+        neighbors[1] = new Position(this.position.x - 1, this.position.y);
+        neighbors[2] = new Position(this.position.x + 1, this.position.y);
+        neighbors[3] = new Position(this.position.x, this.position.y - 1);
 
         return neighbors;
     }
 
-
-    public boolean isNeighbor(Node neighbor){
-        if(this.position.x == neighbor.position.x+1 ||this.position.x == neighbor.position.x-1  && this.position.y == neighbor.position.y+1 || this.position.y == neighbor.position.y-1){
+    public boolean isNeighbor(Node neighbor) {
+        if (this.position.x == neighbor.position.x + 1
+                || this.position.x == neighbor.position.x - 1 && this.position.y == neighbor.position.y + 1
+                || this.position.y == neighbor.position.y - 1) {
             return true;
         }
         return false;
     }
 
-    
 }
