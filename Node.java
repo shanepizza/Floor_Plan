@@ -7,6 +7,10 @@ public class Node implements Serializable{
     NodeType type; // The type of the node (e.g., door, hallway, staircase)
     Position position; // The position of the node on the floor plan
     List<Node> connections; // List of adjacent nodes (connected via edges)
+    int g;
+    int h;
+    int f;
+    Node parent;
 
     public Node(NodeType type, Position position) {
         this.type = type;
