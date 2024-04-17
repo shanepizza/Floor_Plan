@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.*;
 import java.math.*;
 
@@ -13,14 +12,16 @@ public class A_Star extends Thread {
 
   public static void main(String[] args) {
         
-        File[] floors = getAllFiles("Folder to pull from");
+        File[] floors = getAllFiles("F:\\CS3000\\Final\\Floor_Plan\\Floor_Plans");
         //for(files in folder)
         ArrayList<ArrayList<Position>> Path = new ArrayList<ArrayList<Position>>();
+        System.out.println("We stop here.");
         if(floors != null){
+            System.out.println("We reached the if statement");
             for(File file : floors){
-                retrievGraph(file.getName());
+                System.out.println("We reached the for loop");
+                visualizeFloorPlan(retrievGraph(file.getName()));
             }
-
         }
    }
             //load in serialized graph class
@@ -35,18 +36,6 @@ public class A_Star extends Thread {
         Path = new ArrayList<>();
     }
 
-    public static void main(String[] args) {
-
-        // for(files in folder)
-        // load in serialized graph class
-        // create a thread
-        // run A* on the thread with the current graph class
-
-        // print floor name and path.
-        // should we add a name variable to each Graph?
-        // }
-
-    }
 
     public static void begin_Astar(Graph graphToSearch, Node start, Node goal) {
         // Add start to open list
@@ -189,23 +178,69 @@ public class A_Star extends Thread {
     }
 
     static Graph retrievGraph(String fileName){
-    Graph ObjectFloor = null;
-    
-    try {
-        FileInputStream file = new FileInputStream(fileName);
-        ObjectInputStream in = new ObjectInputStream(file);
-        //BufferedReader br = new BufferedReader(new FileReader(file));
-
-        ObjectFloor = (Graph)in.readObject();
-
-        in.close();
-        file.close();
-
+        Graph ObjectFloor = null;
         
-    } catch (Exception e) {
-        System.out.println("Did you serialize each class?");
-    }
+        try {
+            FileInputStream file = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(file);
+            //BufferedReader br = new BufferedReader(new FileReader(file));
 
-    return ObjectFloor;
-}
-}
+            ObjectFloor = (Graph)in.readObject();
+
+            in.close();
+            file.close();
+
+            
+        } catch (Exception e) {
+            System.out.println("Did you serialize each class?");
+        }
+
+        return ObjectFloor;
+    }//End Retrieve
+
+    public static void visualizeFloorPlan(Graph floorPlan) {
+        // Find the maximum x and y coordinates of the nodes
+        
+        
+        int maxX = 0;
+        int maxY = 0;
+        for (Node node : floorPlan.nodes) {
+            maxX = Math.max(maxX, node.position.x);
+            maxY = Math.max(maxY, node.position.y);
+        }
+        
+        // Define the size of the grid
+        int rows = maxX + 1; // Add 1 to include position 0
+        int cols = maxY + 1; // Add 1 to include position 0
+    
+        // Initialize the grid with empty spaces
+        char[][] grid = new char[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                grid[i][j] = '.';
+            }
+        }
+    
+        // Mark the positions of nodes on the grid
+        for (Node node : floorPlan.nodes) {
+            int x = node.position.x;
+            int y = node.position.y;
+    
+            if (node.type == NodeType.DOOR) {
+                grid[x][y] = 'D';
+            } else if (node.type == NodeType.HALLWAY) {
+                grid[x][y] = 'H';
+            } else if (node.type == NodeType.STAIRCASE) {
+                grid[x][y] = 'S';
+            }
+        }
+    
+        // Print the grid with flipped rows and columns
+        for (int j = cols - 1; j >= 0; j--) {
+            for (int i = 0; i < rows; i++) {
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}//End Class
