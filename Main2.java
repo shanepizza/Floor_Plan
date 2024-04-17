@@ -20,6 +20,7 @@ public class Main2 {
 
     //Serialize//
         SerializeGraph(floorplan, filename);
+        System.out.println("Do we get here");
 
     //Deserialize//
         visualizeFloorPlan(retrievGraph(filename));
