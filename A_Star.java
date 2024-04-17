@@ -20,7 +20,9 @@ public class A_Star extends Thread {
             System.out.println("We reached the if statement");
             for(File file : floors){
                 System.out.println("We reached the for loop");
-                visualizeFloorPlan(retrievGraph(file.getName()));
+                //visualizeFloorPlan(retrievGraph(file.getName()));
+                Graph floor = retrievGraph(file.getName());
+                begin_Astar(floor, floor.nodes.get(1), floor.nodes.get(0));
             }
         }
    }
@@ -33,7 +35,7 @@ public class A_Star extends Thread {
     // [ ] Nodes will all need a variable called parent and a getter and setter for the variable.
 
     public A_Star () {
-        Path = new ArrayList<>();
+        
     }
 
 
@@ -42,10 +44,13 @@ public class A_Star extends Thread {
         ArrayList<Node> OpenList = new ArrayList<Node>();
         ArrayList<Node> ClosedList = new ArrayList<Node>();
         ArrayList<Node> ChildrenList = new ArrayList<Node>();
+        Path = new ArrayList<Node>(1);
 
         start.g = 0;
         start.h = find_distance(start, goal);
         start.f = start.h;
+        start.parent = start;
+        Path.add(start);
 
         Node currentNode = start;
         OpenList.add(currentNode);
@@ -90,9 +95,10 @@ public class A_Star extends Thread {
                         }
                     }
                 }
+                ChildrenList.clear();
             }
             // sorts list by lowest f value and sets current node to lowest f val. Adds currentNode to path. Clears children list for next node
-            ChildrenList.clear();
+            
 
             //[ ] Check (is this node the goal?) {
                 //if so, begin to print the path by printing the current node then switch current node to parent node and repeat.
@@ -181,7 +187,7 @@ public class A_Star extends Thread {
         Graph ObjectFloor = null;
         
         try {
-            FileInputStream file = new FileInputStream(fileName);
+            FileInputStream file = new FileInputStream("F:\\CS3000\\Final\\Floor_Plan\\Floor_Plans\\"+ fileName);
             ObjectInputStream in = new ObjectInputStream(file);
             //BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -193,6 +199,7 @@ public class A_Star extends Thread {
             
         } catch (Exception e) {
             System.out.println("Did you serialize each class?");
+            e.printStackTrace();
         }
 
         return ObjectFloor;
