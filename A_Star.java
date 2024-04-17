@@ -1,8 +1,26 @@
-import java.util.*;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.*;
 import java.math.*;
 
-public class A_Star {
+
+public class A_Star extends Thread {
+
+  public static void main(String[] args) {
+        
+        File[] floors = getAllFiles("Folder to pull from");
+        //for(files in folder)
+        ArrayList<ArrayList<Object>> Paths = new ArrayList<ArrayList<Object>>();
+        if(floors != null){
+            for(File file : floors){
+
+        }
+   }
+            //load in serialized graph class
+            // create a thread
+            //run A* on the thread with the current graph class
+
 
     static ArrayList<Node> Path;
     // [ ] Nodes will all need a variable called parent and a getter and setter for the variable.
@@ -155,5 +173,12 @@ public class A_Star {
 
         // [ ] return the proper next-score
         return next;
+    }
+
+    public static File[] getAllFiles(String directoryPath){
+        File directory = new File(directoryPath);
+        File[] floors = directory.listFiles();
+
+        return floors;
     }
 }
