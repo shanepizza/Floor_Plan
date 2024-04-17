@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class A_Star extends Thread {
@@ -8,10 +12,10 @@ public class A_Star extends Thread {
         
         File[] floors = getAllFiles("Folder to pull from");
         //for(files in folder)
-        ArrayList<ArrayList<Position>> Paths = new ArrayList<ArrayList<Position>>();
+        ArrayList<ArrayList<Position>> Path = new ArrayList<ArrayList<Position>>();
         if(floors != null){
             for(File file : floors){
-
+                retrievGraph(file.getName());
             }
         }
             //load in serialized graph class
@@ -108,4 +112,25 @@ public class A_Star extends Thread {
 
         return floors;
     }
+
+    static Graph retrievGraph(String fileName){
+    Graph ObjectFloor = null;
+    
+    try {
+        FileInputStream file = new FileInputStream(fileName);
+        ObjectInputStream in = new ObjectInputStream(file);
+        //BufferedReader br = new BufferedReader(new FileReader(file));
+
+        ObjectFloor = (Graph)in.readObject();
+
+        in.close();
+        file.close();
+
+        
+    } catch (Exception e) {
+        System.out.println("Did you serialize each class?");
+    }
+
+    return ObjectFloor;
+}
 }
