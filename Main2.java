@@ -13,7 +13,6 @@ public class Main2 {
     public static void main(String[] args) {
         Node staircase = new Node(NodeType.STAIRCASE, new Position(18, 5));
         AllNodes.add(staircase);
-        
 
     //Create floorplan hides all the code for the nodes
         Graph floorplan = createFloorPlan();
