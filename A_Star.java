@@ -1,14 +1,14 @@
 import java.io.File;
 import java.util.ArrayList;
 
-public class A_Star {
+public class A_Star extends Thread {
     // [ ] Nodes will all need a variable called parent and a getter and setter for the variable. 
 
     public static void main(String[] args) {
         
         File[] floors = getAllFiles("Folder to pull from");
         //for(files in folder)
-        ArrayList<ArrayList<Object>> Paths = new ArrayList<ArrayList<Object>>();
+        ArrayList<ArrayList<Position>> Paths = new ArrayList<ArrayList<Position>>();
         if(floors != null){
             for(File file : floors){
 
