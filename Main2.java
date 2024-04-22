@@ -8,7 +8,7 @@ import java.util.Random;
 public class Main2 {
     static ArrayList<Node> AllNodes = new ArrayList<Node>();
     static ArrayList<Node> Rooms = new ArrayList<Node>();
-    public static String filename = "SpencersFloorPlan.ser";
+    public static String filename = "Floor_Plans\\TestFloor.ser";
 
     public static void main(String[] args) {
         Node staircase = new Node(NodeType.STAIRCASE, new Position(18, 5));
@@ -17,13 +17,15 @@ public class Main2 {
     //Create floorplan hides all the code for the nodes
         Graph floorplan = createFloorPlan();
         
+        printPositions(floorplan);
+
         visualizeFloorPlan(floorplan);
 
     //Serialize//
         SerializeGraph(floorplan, filename);
 
     //Deserialize//
-        visualizeFloorPlan(retrievGraph(filename));
+        //visualizeFloorPlan(retrievGraph(filename));
 
     }//End Main
 
@@ -47,24 +49,32 @@ public class Main2 {
     static Graph createFloorPlan(){
         Graph floorplan = new Graph();
         createNodes();
+        floorplan.nodes = AllNodes;
+        floorplan.givenames();
 
 
         for (int size = 0; size<AllNodes.size();size++){
             for (Node node : AllNodes) {
-                for (Node node2 : AllNodes) {
-                    if(node.isNeighbor(node2)){
-                        node.addConnection(node2);
-                        node2.addConnection(node);
+                Position[] neighbors = node.getNeighbors();
+                for(int i = 0; i < 4; i++){
+                    
+                    if( floorplan.getNodeViaPosition(neighbors[i])!= null) {
+                        if(!node.connections.contains(floorplan.getNodeViaPosition(neighbors[i]))){
+                            node.addConnection(floorplan.getNodeViaPosition(neighbors[i])); 
+                        }
                     }
+                        
                 }
+                
+                
             }
-            if(AllNodes.get(size).position != null){
-                floorplan.addNode(AllNodes.get(size));
-            }
+            //if(AllNodes.get(size).position != null){
+            //    floorplan.addNode(AllNodes.get(size));
+           // }
             
         }
 
-        System.out.println(floorplan.nodes.get(0));
+        //System.out.println(floorplan.nodes.get(0));
         return floorplan;
     }//End Create
 //Final Form
@@ -200,6 +210,17 @@ public class Main2 {
         createHallway(new Position(2, 12), new Position(19, 12));
         createGroupOfRooms(0, 50);
     }
+
+    static void printPositions(Graph test){
+        
+        for(int i = 0; i < test.nodes.size(); i++){
+            test.nodes.get(i).printPositions();
+        }
+        for(int x = 0; x < test.nodes.size(); x++){
+            test.nodes.get(x).printConections();
+        }
+    }
+
 
 }//End Class
 

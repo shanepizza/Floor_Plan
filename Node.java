@@ -11,6 +11,7 @@ public class Node implements Serializable{
     int h;
     int f;
     Node parent;
+    String name;
 
     public Node(NodeType type, Position position) {
         this.type = type;
@@ -43,6 +44,21 @@ public class Node implements Serializable{
             return true;
         }
         return false;
+    }
+
+    public void printConections(){
+        for(int i = 0; i < connections.size(); i++){
+            System.out.println(this.name +"--"+ connections.get(i).name);
+        }
+        System.out.println();
+    }
+
+    public void printPositions(){
+        System.out.println("("+ position.x +", "+ position.y +")");
+    }
+
+    public String getPositions(){
+        return("("+ position.x +", "+ position.y+")");
     }
 
     

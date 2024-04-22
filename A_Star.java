@@ -12,7 +12,7 @@ public class A_Star extends Thread {
 
   public static void main(String[] args) {
         
-        File[] floors = getAllFiles("F:\\CS3000\\Final\\Floor_Plan\\Floor_Plans");
+        File[] floors = getAllFiles("C:\\Users\\adamj\\OneDrive\\Documents\\College\\SUU\\Winter2024\\CS3000\\Floor_Plan\\Floor_Plans");
         //for(files in folder)
         ArrayList<ArrayList<Position>> Path = new ArrayList<ArrayList<Position>>();
         System.out.println("We stop here.");
@@ -20,7 +20,10 @@ public class A_Star extends Thread {
             System.out.println("We reached the if statement");
             for(File file : floors){
                 System.out.println("We reached the for loop");
-                visualizeFloorPlan(retrievGraph(file.getName()));
+                
+                Graph thefloor = retrievGraph(file.getName()); 
+                visualizeFloorPlan(thefloor);
+                begin_Astar(thefloor, thefloor.nodes.get(0), thefloor.nodes.get(1));
             }
         }
    }
@@ -29,7 +32,7 @@ public class A_Star extends Thread {
             //run A* on the thread with the current graph class
 
 
-    static ArrayList<Node> Path;
+    static ArrayList<Node> Path = new ArrayList<Node>();
     // [ ] Nodes will all need a variable called parent and a getter and setter for the variable.
 
     public A_Star () {
@@ -46,6 +49,7 @@ public class A_Star extends Thread {
         start.g = 0;
         start.h = find_distance(start, goal);
         start.f = start.h;
+        start.parent = start;
 
         Node currentNode = start;
         OpenList.add(currentNode);
@@ -53,6 +57,7 @@ public class A_Star extends Thread {
         while(!OpenList.isEmpty()){
             if (currentNode.equals(goal)) {
                 Path.add(currentNode);
+                printPath();
                 return;
             }
             // sorts the Open List by lowest f value, adds that node to the closed list and removes it from the open list. Adds lowest f val to path list.
@@ -66,15 +71,25 @@ public class A_Star extends Thread {
                 // if a child of the current node is the goal node, add it to the path and exit
                 if (currentNode.connections.get(i).equals(goal)) {
                     Path.add(currentNode.connections.get(i));
+                    System.out.println("Goal node is: "+ goal.getPositions());
+                    System.out.println("Start node is: "+ start.getPositions());
+                    System.out.println("The path is: ");
+                    printPath();
                     return;
                 }
                 // if a child node is already in the closed list, skip and move on.
-                if (ClosedList.contains(currentNode.connections.get(i))) continue;
+                //if (ClosedList.contains(currentNode.connections.get(i))) continue;
                 ChildrenList.add(currentNode.connections.get(i));
                 currentNode.connections.get(i).parent = currentNode;
+
+//This is what is broken
+                
                 ChildrenList.get(i).g = find_traversed(currentNode);
                 ChildrenList.get(i).h = find_distance(currentNode, goal);
                 ChildrenList.get(i).f = calculate_next(currentNode, goal);
+                
+
+
                 // if child isn't in open list, add it
                 if (!OpenList.contains(ChildrenList.get(i))) {
                     OpenList.add(ChildrenList.get(i));
@@ -90,6 +105,7 @@ public class A_Star extends Thread {
                         }
                     }
                 }
+                
             }
             // sorts list by lowest f value and sets current node to lowest f val. Adds currentNode to path. Clears children list for next node
             ChildrenList.clear();
@@ -121,6 +137,8 @@ public class A_Star extends Thread {
                 //Notes* there is no need to worry about the case where current child has a lowerscore than the same node in either the open or closed list because
 
         }
+
+        
     }
 
     // Instead of static these methods could all be added to the Node class. might
@@ -181,7 +199,7 @@ public class A_Star extends Thread {
         Graph ObjectFloor = null;
         
         try {
-            FileInputStream file = new FileInputStream(fileName);
+            FileInputStream file = new FileInputStream("Floor_Plans\\"+ fileName);
             ObjectInputStream in = new ObjectInputStream(file);
             //BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -193,6 +211,7 @@ public class A_Star extends Thread {
             
         } catch (Exception e) {
             System.out.println("Did you serialize each class?");
+            e.printStackTrace();
         }
 
         return ObjectFloor;
@@ -243,4 +262,11 @@ public class A_Star extends Thread {
             System.out.println();
         }
     }
+
+    public static void printPath(){
+        for(int i = 0; i < Path.size(); i++){
+            Path.get(i).printPositions();
+        }
+    }
+
 }//End Class
