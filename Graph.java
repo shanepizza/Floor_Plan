@@ -33,5 +33,16 @@ public class Graph implements Serializable {
         this.Name = name;
     }
 
+    public Node getNodeViaPosition(Position currentPosition){
+        for(Node node : nodes){
+            if(node.position.y == currentPosition.y && currentPosition.x == node.position.x) return node;
+        }
+        return null;
+    }
 
+    void givenames(){
+        for(int i = 0; i < nodes.size(); i++){
+            nodes.get(i).name = i+"";
+        }
+    }
 }
