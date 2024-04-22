@@ -6,19 +6,57 @@ import java.util.*;
 public class Re_A_Star extends Thread {
     //static ArrayList<Node> _path = new ArrayList<Node>();
 
+    Graph CurrentFloor;
+    Node Start;
+    Node Goal;
+
+   static ArrayList<Node> Path_currentFloor;
+
+    public Re_A_Star (Graph floor, Node start, Node goal) {
+        CurrentFloor = floor;
+        Start = start;
+        Goal = goal;
+    }
+
+    public void run() {
+        begin_Astar(CurrentFloor, Start, Goal);
+    }
     public static void main(String[] args) {
-        
-        File[] floors = getAllFiles("C:\\Users\\adamj\\OneDrive\\Documents\\College\\SUU\\Winter2024\\CS3000\\Floor_Plan\\Floor_Plans");
-        if(floors != null){
-            for(File file : floors){
-                //This still needs to be Threaded{
-                    Graph thefloor = retrievGraph(file.getName()); 
-                    //Not this part though.
-                    visualizeFloorPlan(thefloor);
-                    begin_Astar(thefloor, thefloor.nodes.get(1), thefloor.nodes.get(0));
-                //}
-            }//End for
-        }//End if
+        File[] floors = getAllFiles("/Users/spencersmith/Desktop/Floor_Plan/Floor_Plans");
+        Re_A_Star[] threads = new Re_A_Star[floors.length];
+
+        if(floors != null) {
+            for (int i = 0; i < threads.length; i++) {
+                Graph currentFloor = retrievGraph(floors[i].getName());
+                visualizeFloorPlan(currentFloor);
+                threads[i] = new Re_A_Star(currentFloor, currentFloor.nodes.get(1), currentFloor.nodes.get(0));
+                threads[i].start();
+            }
+
+        }
+
+        for (int i = 0; i < threads.length; i++) {
+            try {
+                System.out.println("--"); // this is to break paths between floors
+                for (int j = 0; j < Path_currentFloor.size(); j++) {
+                    Path_currentFloor.get(j).printPositions();
+                }
+
+                threads[i].join();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+//        if(floors != null){
+//            for(File file : floors){
+//                //This still needs to be Threaded{
+//                    Graph thefloor = retrievGraph(file.getName());
+//                    //Not this part though.
+//                    visualizeFloorPlan(thefloor);
+//                    begin_Astar(thefloor, thefloor.nodes.get(1), thefloor.nodes.get(0));
+//                //}
+//            }//End for
+//        }//End if
     }//End Main
 
     public static void begin_Astar(Graph graphWeSearch, Node start, Node goal){
@@ -44,7 +82,7 @@ public class Re_A_Star extends Thread {
                     System.out.println("Found a way out!");
                     printParents(curretnNode);
                     //Currently, it does not print the last spot needed to arrive at the stairs. I manually have it print the lost location. 
-                    System.out.println(start.getPositions());
+                    //System.out.println(start.getPositions());
                     return;
                 }
 
@@ -134,7 +172,7 @@ public class Re_A_Star extends Thread {
         Graph ObjectFloor = null;
         
         try {
-            FileInputStream file = new FileInputStream("Floor_Plans\\"+ fileName);
+            FileInputStream file = new FileInputStream("Floor_Plans/" + fileName);
             ObjectInputStream in = new ObjectInputStream(file);
             //BufferedReader br = new BufferedReader(new FileReader(file));
 
@@ -200,11 +238,15 @@ public class Re_A_Star extends Thread {
 //Might need Editing
     public static void printParents(Node endOfPath){
         Node currentNode = endOfPath;
+        ArrayList<Node> path = new ArrayList<>();
         while(currentNode.parent != null){
         //Not all nodes have a name right now. Either stop printing the name or make a use case where there is no name. 
-            System.out.println("Node: "+ currentNode.name+", Position: "+ currentNode.getPositions());
+            //System.out.println("Node: "+ currentNode.name+", Position: "+ currentNode.getPositions());
+            path.add(currentNode);
             currentNode = currentNode.parent;
         }
+        Collections.reverse(path);
+        Path_currentFloor = path;
     }
 
 }//End Class
